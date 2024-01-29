@@ -8,12 +8,33 @@ from src.dataset.constants import DEFAULT_IMAGES_DIR, DEFAULT_LABELS_DIR
 
 
 def fetch_image(input_images_dir: str, filename: str) -> Image.Image:
-    """Fetch a particular image from /data/images"""
+    """
+    Fetches a particular image from the specified directory.
+
+    Args:
+        input_images_dir (str): The directory where the images are located.
+        filename (str): The name of the image file to fetch.
+
+    Returns:
+        PIL.Image.Image: The fetched image.
+
+    Raises:
+        FileNotFoundError: If the specified image file does not exist.
+    """
     return Image.open(fp=os.path.join(input_images_dir, filename))
 
 
 def fetch_yolo_boxes(input_labels_dir: str, filename: str) -> list[BoundingBox]:
-    """Fetch bounding boxes from /data/labels for a particular image"""
+    """
+    Fetch YOLO annotations (bounding boxes) from the specified directory for a particular image.
+
+    Args:
+        input_labels_dir (str): The directory path where the labels are stored.
+        filename (str): The name of the file containing the labels.
+
+    Returns:
+        list[BoundingBox]: A list of BoundingBox objects representing the fetched bounding boxes.
+    """
     boxes = []
 
     with open(os.path.join(input_labels_dir, filename)) as label_file:
@@ -28,7 +49,19 @@ def fetch_labeled_image(
     input_images_dir: str = DEFAULT_IMAGES_DIR,
     input_labels_dir: str = DEFAULT_LABELS_DIR,
 ) -> LabeledImage:
-    """Fetch a particular image and its bounding boxes from /data/images and /data/labels"""
+    """
+    Fetches a labeled image.
+
+    Args:
+        filename (str): The name of the image file.
+        input_images_dir (str, optional): The directory where the images are stored.
+            Defaults to DEFAULT_IMAGES_DIR.
+        input_labels_dir (str, optional): The directory where the labels are stored.
+            Defaults to DEFAULT_LABELS_DIR.
+
+    Returns:
+        LabeledImage: The fetched labeled image.
+    """
     image = fetch_image(input_images_dir=input_images_dir, filename=filename)
     boxes = fetch_yolo_boxes(
         input_labels_dir=input_labels_dir, filename=filename.replace(".png", ".txt")
@@ -38,7 +71,15 @@ def fetch_labeled_image(
 
 
 def fetch_all_images(input_images_dir: str) -> list[Image.Image]:
-    """Fetch images from /data/images"""
+    """
+    Fetches all the images with the ".png" extension from the specified directory.
+
+    Args:
+        input_images_dir (str): The directory path where the images are located.
+
+    Returns:
+        list[Image.Image]: A list of PIL Image objects representing the fetched images.
+    """
     images = []
 
     for filename in os.listdir(input_images_dir):
@@ -50,7 +91,15 @@ def fetch_all_images(input_images_dir: str) -> list[Image.Image]:
 
 
 def fetch_all_yolo_boxes(input_labels_dir: str) -> list[BoundingBox]:
-    """Fetch all bounding boxes from /data/labels"""
+    """
+    Fetches all YOLO boxes from the given input_labels_dir.
+
+    Args:
+        input_labels_dir (str): The directory path where the YOLO labels are stored.
+
+    Returns:
+        list[BoundingBox]: A list of BoundingBox objects containing the fetched YOLO boxes.
+    """
     boxes = []
 
     for filename in os.listdir(input_labels_dir):
@@ -63,7 +112,19 @@ def fetch_all_yolo_boxes(input_labels_dir: str) -> list[BoundingBox]:
 def fetch_all_labeled_images(
     input_images_dir: str = DEFAULT_IMAGES_DIR, input_labels_dir: str = DEFAULT_LABELS_DIR
 ) -> list[LabeledImage]:
-    """Fetch images and bounding boxes from /data/images and /data/labels"""
+    """
+    Fetches all labeled images from the specified input directories.
+
+    Args:
+        input_images_dir (str): The directory path where the input images are stored.
+            Defaults to DEFAULT_IMAGES_DIR.
+        input_labels_dir (str): The directory path where the input labels are stored.
+            Defaults to DEFAULT_LABELS_DIR.
+
+    Returns:
+        list[LabeledImage]: A list of LabeledImage objects containing the fetched images
+        and their corresponding bounding boxes.
+    """
     labeled_images = []
 
     for filename in os.listdir(input_images_dir):
