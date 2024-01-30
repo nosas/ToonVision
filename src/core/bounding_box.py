@@ -69,20 +69,20 @@ class BoundingBox:
 
         Args:
             annotation (list[str]): List of annotation values.
+            Example input : ['6', '0.4023', '0.4336', '0.1077', '0.4699']
             Columns       : label, x, y, w, h
-            Example input : 6 0.4023 0.4336 0.1077 0.4699
 
         Returns:
             BoundingBox: BoundingBox object in YOLO format
         """
         label = annotation[0]
-        x, y, w, h = annotation[1:]
+        x, y, w, h = map(float, annotation[1:])
 
         return cls(
-            x=float(x),
-            y=float(y),
-            w=float(w),
-            h=float(h),
+            x=x,
+            y=y,
+            w=w,
+            h=h,
             label=label,
             format=BBFORMAT.YOLO,
         )
